@@ -1,0 +1,163 @@
+WARNING:traitlets:Message signing is disabled.  This is insecure and not recommended!
+WARNING:traitlets:Message signing is disabled.  This is insecure and not recommended!
+INFO:mage_ai.server.scheduler_manager:Start scheduler.
+Initializing global job manager:  <mage_ai.orchestration.job_manager.JobManager object at 0x7f519e588190>
+INFO:mage_ai.server.active_kernel:Switch active kernel: python3
+INFO:alembic.runtime.migration:Context impl PostgresqlImpl.
+INFO:alembic.runtime.migration:Will assume transactional DDL.
+INFO:mage_ai.orchestration.pipeline_scheduler_original:Active pipeline runs: []
+INFO:mage_ai.server.server:Mage is running at http://localhost:6789/stg and serving project /home/src/Staging
+INFO:mage_ai.server.server:User authentication is enabled.
+INFO:mage_ai.server.server:Initializing block cache.
+INFO:mage_ai.server.server:Initializing pipeline cache.
+INFO:mage_ai.server.server:Initializing tag cache.
+INFO:mage_ai.server.server:Initializing block action object cache.
+Checking port 6789 on host localhost...
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /usr/local/lib/python3.10/site-packages/mage_ai/cli/main.py:147 in start     │
+│                                                                              │
+│   144 │                                                                      │
+│   145 │   initialize_globals()                                               │
+│   146 │                                                                      │
+│ ❱ 147 │   start_server(                                                      │
+│   148 │   │   host=host,                                                     │
+│   149 │   │   port=port,                                                     │
+│   150 │   │   project=project_path,                                          │
+│                                                                              │
+│ /usr/local/lib/python3.10/site-packages/mage_ai/server/server.py:813 in      │
+│ start_server                                                                 │
+│                                                                              │
+│   810 │   │   │   │   traceback.print_exc()                                  │
+│   811 │   │                                                                  │
+│   812 │   │   # Start web server                                             │
+│ ❱ 813 │   │   asyncio.run(                                                   │
+│   814 │   │   │   main(                                                      │
+│   815 │   │   │   │   host=host,                                             │
+│   816 │   │   │   │   port=port,                                             │
+│                                                                              │
+│ /usr/local/lib/python3.10/asyncio/runners.py:44 in run                       │
+│                                                                              │
+│   41 │   │   events.set_event_loop(loop)                                     │
+│   42 │   │   if debug is not None:                                           │
+│   43 │   │   │   loop.set_debug(debug)                                       │
+│ ❱ 44 │   │   return loop.run_until_complete(main)                            │
+│   45 │   finally:                                                            │
+│   46 │   │   try:                                                            │
+│   47 │   │   │   _cancel_all_tasks(loop)                                     │
+│                                                                              │
+│ /usr/local/lib/python3.10/asyncio/base_events.py:649 in run_until_complete   │
+│                                                                              │
+│    646 │   │   if not future.done():                                         │
+│    647 │   │   │   raise RuntimeError('Event loop stopped before Future comp │
+│    648 │   │                                                                 │
+│ ❱  649 │   │   return future.result()                                        │
+│    650 │                                                                     │
+│    651 │   def stop(self):                                                   │
+│    652 │   │   """Stop running the event loop.                               │
+│                                                                              │
+│ /usr/local/lib/python3.10/site-packages/mage_ai/server/server.py:658 in main │
+│                                                                              │
+│   655 │   │                                                                  │
+│   656 │   │   project_model = Project(root_project=True)                     │
+│   657 │   │   logger.info('Initializing block action object cache.')         │
+│ ❱ 658 │   │   await BlockActionObjectCache.initialize_cache(project=project_ │
+│   659 │   │                                                                  │
+│   660 │   │   if project_model:                                              │
+│   661 │   │   │   if project_model.spark_config and project_model.is_feature │
+│                                                                              │
+│ /usr/local/lib/python3.10/site-packages/mage_ai/cache/block_action_object/__ │
+│ init__.py:94 in initialize_cache                                             │
+│                                                                              │
+│    91 │   ) -> 'BlockActionObjectCache':                                     │
+│    92 │   │   cache = self()                                                 │
+│    93 │   │   if replace or not cache.exists():                              │
+│ ❱  94 │   │   │   await cache.initialize_cache_for_all_objects(project=proje │
+│    95 │   │                                                                  │
+│    96 │   │   return cache                                                   │
+│    97                                                                        │
+│                                                                              │
+│ /usr/local/lib/python3.10/site-packages/mage_ai/cache/block_action_object/__ │
+│ init__.py:304 in initialize_cache_for_all_objects                            │
+│                                                                              │
+│   301 │   │   │   │   │   │   continue                                       │
+│   302 │   │   │   │   │                                                      │
+│   303 │   │   │   │   │   block_file_absolute_path = path.absolute()         │
+│ ❱ 304 │   │   │   │   │   d = parse_block_file_absolute_path(block_file_abso │
+│   305 │   │   │   │   │                                                      │
+│   306 │   │   │   │   │   file_path = d.get('file_path')                     │
+│   307 │   │   │   │   │   filename = d.get('filename')                       │
+│                                                                              │
+│ /usr/local/lib/python3.10/site-packages/mage_ai/cache/block_action_object/__ │
+│ init__.py:49 in parse_block_file_absolute_path                               │
+│                                                                              │
+│    46                                                                        │
+│    47 def parse_block_file_absolute_path(block_file_absolute_path: str) -> D │
+│    48 │   block_type = Block.block_type_from_path(block_file_absolute_path)  │
+│ ❱  49 │   file_directory_name = Block.file_directory_name(block_type)        │
+│    50 │                                                                      │
+│    51 │   # This is the block_file_absolute_path without the repo_path       │
+│    52 │   file_path = str(block_file_absolute_path)                          │
+│                                                                              │
+│ /usr/local/lib/python3.10/site-packages/mage_ai/data_preparation/models/bloc │
+│ k/__init__.py:1202 in file_directory_name                                    │
+│                                                                              │
+│   1199 │                                                                     │
+│   1200 │   @classmethod                                                      │
+│   1201 │   def file_directory_name(self, block_type: BlockType) -> str:      │
+│ ❱ 1202 │   │   return block_type + 's' if block_type != BlockType.CUSTOM els │
+│   1203 │                                                                     │
+│   1204 │   @classmethod                                                      │
+│   1205 │   def block_type_from_path(                                         │
+╰──────────────────────────────────────────────────────────────────────────────╯
+TypeError: unsupported operand type(s) for +: 'NoneType' and 'str'
+INFO:mage_ai.orchestration.pipeline_scheduler_original:Active pipeline runs: []
+Process Process-2:
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/server/scheduler_manager.py", line 58, in run_scheduler
+    LoopTimeTrigger().start()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/triggers/loop_time_trigger.py", line 14, in start
+    self.run()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/triggers/time_trigger.py", line 11, in run
+    schedule_all()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/pipeline_scheduler_original.py", line 1740, in schedule_all
+    job_manager.clean_up_jobs()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/job_manager.py", line 23, in clean_up_jobs
+    self.queue.clean_up_jobs()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/queue/process_queue.py", line 88, in clean_up_jobs
+    job_ids = self.job_dict.keys()
+  File "<string>", line 2, in keys
+  File "/usr/local/lib/python3.10/multiprocessing/managers.py", line 817, in _callmethod
+    conn.send((self._id, methodname, args, kwds))
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 206, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/local/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/db/process.py", line 15, in start_session_and_run
+    results = target(*args)
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/server/scheduler_manager.py", line 61, in run_scheduler
+    job_manager.stop()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/job_manager.py", line 85, in stop
+    self.queue.stop()
+  File "/usr/local/lib/python3.10/site-packages/mage_ai/orchestration/queue/process_queue.py", line 215, in stop
+    job_ids = self.job_dict.keys()
+  File "<string>", line 2, in keys
+  File "/usr/local/lib/python3.10/multiprocessing/managers.py", line 817, in _callmethod
+    conn.send((self._id, methodname, args, kwds))
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 206, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 411, in _send_bytes
+    self._send(header + buf)
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 368, in _send
+    n = write(self._handle, buf)
+BrokenPipeError: [Errno 32] Broken pipe
