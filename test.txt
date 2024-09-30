@@ -1,202 +1,45 @@
-ERROR:tornado.application:Uncaught exception GET /mage/ABC/websocket/ (xxx.yyy.zzz.123)
-HTTPServerRequest(protocol='http', host='mage-ABC', method='GET', uri='/mage/ABC/websocket/', version='HTTP/1.1', remote_ip='xxx.yyy.zzz.123')
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/tornado/web.py", line 1786, in _execute
-    result = await result
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 272, in get
-    await self.ws_connection.accept_connection(self)
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 862, in accept_connection
-    await self._accept_connection(handler)
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 945, in _accept_connection
-    await self._receive_frame_loop()
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 1101, in _receive_frame_loop
-    await self._receive_frame()
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 1192, in _receive_frame
-    await handled_future
-  File "/usr/local/lib/python3.10/asyncio/futures.py", line 285, in __await__
-    yield self  # This tells Task to wait for completion.
-  File "/usr/local/lib/python3.10/asyncio/tasks.py", line 304, in __wakeup
-    future.result()
-  File "/usr/local/lib/python3.10/asyncio/futures.py", line 201, in result
-    raise self._exception.with_traceback(self._exception_tb)
-  File "/usr/local/lib/python3.10/asyncio/tasks.py", line 232, in __step
-    result = coro.send(None)
-  File "/usr/local/lib/python3.10/site-packages/mage_ai/server/websocket_server.py", line 197, in on_message
-    ).first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2824, in first
-    return self.limit(1)._iter().first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2916, in _iter
-    result = self.session.execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1717, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1710, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1577, in _execute_clauseelement
-    ret = self._execute_context(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1808, in _execute_context
-    conn = self._revalidate_connection()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 650, in _revalidate_connection
-    self._invalid_transaction()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 622, in _invalid_transaction
-    raise exc.PendingRollbackError(
-sqlalchemy.exc.PendingRollbackError: Can't reconnect until invalid transaction is rolled back. (Background on this error at: https://sqlalche.me/e/14/8s2b)
-ERROR:tornado.application:Exception in callback functools.partial(<function WebSocketProtocol._run_callback.<locals>.<lambda> at 0x7fac26199990>, <Task finished name='Task-4565' coro=<WebSocketServer.on_message() done, defined at /usr/local/lib/python3.10/site-packages/mage_ai/server/websocket_server.py:185> exception=PendingRollbackError("Can't reconnect until invalid transaction is rolled back.")>)
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/tornado/ioloop.py", line 738, in _run_callback
-    ret = callback()
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 639, in <lambda>
-    self.stream.io_loop.add_future(result, lambda f: f.result())
-  File "/usr/local/lib/python3.10/asyncio/futures.py", line 201, in result
-    raise self._exception.with_traceback(self._exception_tb)
-  File "/usr/local/lib/python3.10/asyncio/tasks.py", line 232, in __step
-    result = coro.send(None)
-  File "/usr/local/lib/python3.10/site-packages/mage_ai/server/websocket_server.py", line 197, in on_message
-    ).first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2824, in first
-    return self.limit(1)._iter().first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2916, in _iter
-    result = self.session.execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1717, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1710, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1577, in _execute_clauseelement
-    ret = self._execute_context(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1808, in _execute_context
-    conn = self._revalidate_connection()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 650, in _revalidate_connection
-    self._invalid_transaction()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 622, in _invalid_transaction
-    raise exc.PendingRollbackError(
-sqlalchemy.exc.PendingRollbackError: Can't reconnect until invalid transaction is rolled back. (Background on this error at: https://sqlalche.me/e/14/8s2b)
-
-ERROR:tornado.application:Uncaught exception GET /mage/ABC/websocket/ (xxx.yyy.zzz.123)
-HTTPServerRequest(protocol='http', host='mage-ABC', method='GET', uri='/mage/ABC/websocket/', version='HTTP/1.1', remote_ip='xxx.yyy.zzz.123')
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1910, in _execute_context
-    self.dialect.do_execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
-    cursor.execute(statement, parameters)
-psycopg2.OperationalError: server closed the connection unexpectedly
-        This probably means the server terminated abnormally
-        before or while processing the request.
-
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/tornado/web.py", line 1786, in _execute
-    result = await result
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 272, in get
-    await self.ws_connection.accept_connection(self)
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 862, in accept_connection
-    await self._accept_connection(handler)
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 945, in _accept_connection
-    await self._receive_frame_loop()
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 1101, in _receive_frame_loop
-    await self._receive_frame()
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 1192, in _receive_frame
-    await handled_future
-  File "/usr/local/lib/python3.10/asyncio/futures.py", line 285, in __await__
-    yield self  # This tells Task to wait for completion.
-  File "/usr/local/lib/python3.10/asyncio/tasks.py", line 304, in __wakeup
-    future.result()
-  File "/usr/local/lib/python3.10/asyncio/futures.py", line 201, in result
-    raise self._exception.with_traceback(self._exception_tb)
-  File "/usr/local/lib/python3.10/asyncio/tasks.py", line 232, in __step
-    result = coro.send(None)
-  File "/usr/local/lib/python3.10/site-packages/mage_ai/server/websocket_server.py", line 197, in on_message
-    ).first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2824, in first
-    return self.limit(1)._iter().first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2916, in _iter
-    result = self.session.execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1717, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1710, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1577, in _execute_clauseelement
-    ret = self._execute_context(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1953, in _execute_context
-    self._handle_dbapi_exception(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2134, in _handle_dbapi_exception
-    util.raise_(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
-    raise exception
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1910, in _execute_context
-    self.dialect.do_execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
-        This probably means the server terminated abnormally
-        before or while processing the request.
-
-[SQL: SELECT oauth2_application.id AS oauth2_application_id, oauth2_application.created_at AS oauth2_application_created_at, oauth2_application.updated_at AS oauth2_application_updated_at, oauth2_application.authorization_grant_type AS oauth2_application_authorization_grant_type, oauth2_application.client_id AS oauth2_application_client_id, oauth2_application.client_type AS oauth2_application_client_type, oauth2_application.name AS oauth2_application_name, oauth2_application.redirect_uris AS oauth2_application_redirect_uris, oauth2_application.user_id AS oauth2_application_user_id
-FROM oauth2_application
-WHERE oauth2_application.client_id = %(client_id_1)s
- LIMIT %(param_1)s]
-[parameters: {'client_id_1': 'zkWlN0PkIKSN0C11CfUHUj84OT5XOJ6tDZ6bDRO2', 'param_1': 1}]
-(Background on this error at: https://sqlalche.me/e/14/e3q8)
-ERROR:tornado.application:Exception in callback functools.partial(<function WebSocketProtocol._run_callback.<locals>.<lambda> at 0x7fac2876f370>, <Task finished name='Task-5295' coro=<WebSocketServer.on_message() done, defined at /usr/local/lib/python3.10/site-packages/mage_ai/server/websocket_server.py:185> exception=OperationalError('(psycopg2.OperationalError) server closed the connection unexpectedly\n\tThis probably means the server terminated abnormally\n\tbefore or while processing the request.\n')>)
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1910, in _execute_context
-    self.dialect.do_execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
-    cursor.execute(statement, parameters)
-psycopg2.OperationalError: server closed the connection unexpectedly
-        This probably means the server terminated abnormally
-        before or while processing the request.
-
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/usr/local/lib/python3.10/site-packages/tornado/ioloop.py", line 738, in _run_callback
-    ret = callback()
-  File "/usr/local/lib/python3.10/site-packages/tornado/websocket.py", line 639, in <lambda>
-    self.stream.io_loop.add_future(result, lambda f: f.result())
-  File "/usr/local/lib/python3.10/asyncio/futures.py", line 201, in result
-    raise self._exception.with_traceback(self._exception_tb)
-  File "/usr/local/lib/python3.10/asyncio/tasks.py", line 232, in __step
-    result = coro.send(None)
-  File "/usr/local/lib/python3.10/site-packages/mage_ai/server/websocket_server.py", line 197, in on_message
-    ).first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2824, in first
-    return self.limit(1)._iter().first()
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/query.py", line 2916, in _iter
-    result = self.session.execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/orm/session.py", line 1717, in execute
-    result = conn._execute_20(statement, params or {}, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1710, in _execute_20
-    return meth(self, args_10style, kwargs_10style, execution_options)
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/sql/elements.py", line 334, in _execute_on_connection
-    return connection._execute_clauseelement(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1577, in _execute_clauseelement
-    ret = self._execute_context(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1953, in _execute_context
-    self._handle_dbapi_exception(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 2134, in _handle_dbapi_exception
-    util.raise_(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
-    raise exception
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/base.py", line 1910, in _execute_context
-    self.dialect.do_execute(
-  File "/usr/local/lib/python3.10/site-packages/sqlalchemy/engine/default.py", line 736, in do_execute
-    cursor.execute(statement, parameters)
-sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) server closed the connection unexpectedly
-        This probably means the server terminated abnormally
-        before or while processing the request.
-
-[SQL: SELECT oauth2_application.id AS oauth2_application_id, oauth2_application.created_at AS oauth2_application_created_at, oauth2_application.updated_at AS oauth2_application_updated_at, oauth2_application.authorization_grant_type AS oauth2_application_authorization_grant_type, oauth2_application.client_id AS oauth2_application_client_id, oauth2_application.client_type AS oauth2_application_client_type, oauth2_application.name AS oauth2_application_name, oauth2_application.redirect_uris AS oauth2_application_redirect_uris, oauth2_application.user_id AS oauth2_application_user_id
-FROM oauth2_application
-WHERE oauth2_application.client_id = %(client_id_1)s
- LIMIT %(param_1)s]
-[parameters: {'client_id_1': 'zkWlN0PkIKSN0C11CfUHUj84OT5XOJ6tDZ6bDRO2', 'param_1': 1}]
-(Background on this error at: https://sqlalche.me/e/14/e3q8)
-INFO:mage_ai.api.logging:[2024-08-12T21:25:31.393621][api.views] Action: detail pipelines not
+cat /sys/fs/cgroup/memory.stat
+anon 844009472
+file 46453346304
+kernel_stack 1802240
+pagetables 5074944
+percpu 3456
+sock 49152
+shmem 12288
+file_mapped 8192
+file_dirty 0
+file_writeback 0
+swapcached 0
+anon_thp 0
+file_thp 0
+shmem_thp 0
+inactive_anon 843911168
+active_anon 36864
+inactive_file 4104208384
+active_file 42349125632
+unevictable 0
+slab_reclaimable 1391986824
+slab_unreclaimable 6284384
+slab 1398271208
+workingset_refault_anon 0
+workingset_refault_file 833
+workingset_activate_anon 0
+workingset_activate_file 833
+workingset_restore_anon 0
+workingset_restore_file 832
+workingset_nodereclaim 0
+pgscan 48235
+pgsteal 48235
+pgscan_kswapd 48235
+pgscan_direct 0
+pgsteal_kswapd 48235
+pgsteal_direct 0
+pgfault 5043452616
+pgmajfault 10
+pgrefill 429038
+pgactivate 10775748
+pgdeactivate 429038
+pglazyfree 5795144
+pglazyfreed 0
+thp_fault_alloc 0
+thp_collapse_alloc 0
