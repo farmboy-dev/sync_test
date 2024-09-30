@@ -1,5 +1,8 @@
-free -t -m
-               total        used        free      shared  buff/cache   available
-Mem:          192457       22892        2755        1640      169770      169564
-Swap:          32767           0       32767
-Total:        225225       22892       35523
+docker top mage-stg
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                18112               18089               0                   Sep25               ?                   00:10:57            /usr/local/bin/python3.10 /usr/local/bin/mage start Staging
+root                18274               18112               0                   Sep25               ?                   00:03:35            /usr/local/bin/python3.10 /usr/local/bin/mage start Staging
+root                18282               18112               1                   Sep25               ?                   02:06:00            /usr/local/bin/python3.10 /usr/local/bin/mage start Staging
+root                18284               18112               0                   Sep25               ?                   00:00:01            /usr/local/bin/python3.10 -m ipykernel_launcher -f /tmp/tmpj0n8wn3v.json
+root                18604               18112               0                   Sep25               pts/0               00:00:00            /usr/bin/bash
+
