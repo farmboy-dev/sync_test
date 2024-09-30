@@ -1,8 +1,15 @@
-docker top mage-stg
-UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
-root                18112               18089               0                   Sep25               ?                   00:10:57            /usr/local/bin/python3.10 /usr/local/bin/mage start Staging
-root                18274               18112               0                   Sep25               ?                   00:03:35            /usr/local/bin/python3.10 /usr/local/bin/mage start Staging
-root                18282               18112               1                   Sep25               ?                   02:06:00            /usr/local/bin/python3.10 /usr/local/bin/mage start Staging
-root                18284               18112               0                   Sep25               ?                   00:00:01            /usr/local/bin/python3.10 -m ipykernel_launcher -f /tmp/tmpj0n8wn3v.json
-root                18604               18112               0                   Sep25               pts/0               00:00:00            /usr/bin/bash
+top - 16:15:45 up 172 days,  5:34,  0 users,  load average: 0.30, 0.48, 0.62
+Tasks: 788 total,   1 running, 783 sleeping,   0 stopped,   4 zombie
+%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.6 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem : 192457.1 total,   2682.5 free,  19955.3 used, 169819.2 buff/cache
+MiB Swap:  32768.0 total,  32768.0 free,      0.0 used. 169540.5 avail Mem
 
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+22192 root      20   0   47644   9704   4184 S   4.0   0.0   6948:47 htop
+19425 smprc     20   0 1350396  74540  25128 S   3.6   0.0   6709:45 cadvisor
+63989 smprc     20   0  525600 446068   4900 S   3.3   0.2   7940:22 slirp4netns
+54573 296605    20   0 1242924  19604  11532 S   2.0   0.0   1491:52 node_exporter
+30401 231543    20   0 1869352 171032  96208 S   1.7   0.1 197:12.25 grafana
+64036 smprc     20   0 1278256  49756  28760 S   1.0   0.0   1667:50 containerd
+ 8826 smprc     20   0 8825772 530452 142804 S   0.7   0.3   5:16.97 mage
+  885 root       0 -20       0      0      0 I   0.3   0.0   0:45.16 kworker/21:1H-xf
