@@ -1,0 +1,125 @@
+#!/bin/bash
+
+BASE_URL="https://example.com/files/"
+DEPTH=2
+OUTPUT_FILE="svn_repo_info.csv"
+
+# CSV 헤더 추가
+echo "Repo Name,Repo URL,Last Commit Author,Last Commit Date" > "$OUTPUT_FILE"
+
+get_folders() {
+    local url="$1"
+    curl -sk "$url" | grep -oP '(?<=href=")[^"]+/' | while read -r folder; do
+        local full_url="${url}${folder}"
+        
+        if [ "$2" -gt 1 ]; then
+            check_svn_repo "$full_url" "$(( $2 - 1 ))"
+        fi
+    done
+}
+
+check_svn_repo() {
+    local folder_url="$1"
+    local depth="$2"
+
+    curl -sk "$folder_url" | grep -oP '(?<=href=")[^"]+/' | while read -r subfolder; do
+        local repo_url="${folder_url}${subfolder}"
+        local repo_name=$(basename "$subfolder")  # SVN Repo 이름 추출
+
+        # `.svn/` 존재 여부 체크
+        if curl -sk --head "${repo_url}.svn/" | grep -q "200 OK"; then
+            echo "SVN repo found: $repo_url"
+
+            # `svn info` 실행
+            svn_output=$(svn info "$repo_url" --non-interactive --trust-server-cert --no-auth-cache 2>/dev/null)
+            author=$(echo "$svn_output" | awk -F': ' '/Last Changed Author/ {print $2}')
+            date=$(echo "$svn_output" | awk -F': ' '/Last Changed Date/ {print $2}')
+
+            # CSV 파일에 저장
+            echo "\"$repo_name\",\"$repo_url\",\"$author\",\"$date\"" >> "$OUTPUT_FILE"
+        fi
+
+        # 재귀적으로 탐색
+        if [ "$depth" -gt 1 ]; then
+            check_svn_repo "$repo_url" "$(( $depth - 1 ))"
+        fi
+    done
+}
+
+# 실행
+get_folders "$BASE_URL" "$DEPTH"
+echo "CSV 저장 완료: $OUTPUT_FILE"
+
+
+python
+
+import requests
+from bs4 import BeautifulSoup
+import subprocess
+import urllib.parse
+import csv
+import os
+
+BASE_URL = "https://example.com/files/"
+DEPTH = 2
+OUTPUT_FILE = "svn_repo_info.csv"
+
+# CSV 파일 생성 및 헤더 추가
+with open(OUTPUT_FILE, mode="w", newline="", encoding="utf-8") as file:
+    writer = csv.writer(file)
+    writer.writerow(["Repo Name", "Repo URL", "Last Commit Author", "Last Commit Date"])
+
+def get_folders(url, depth):
+    if depth == 0:
+        return
+    try:
+        response = requests.get(url, verify=False)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.text, "html.parser")
+        folders = [a["href"] for a in soup.find_all("a") if a["href"].endswith("/")]
+
+        for folder in folders:
+            full_url = urllib.parse.urljoin(url, folder)
+
+            if depth > 1:
+                check_svn_repo(full_url, depth - 1)
+
+    except requests.RequestException as e:
+        print(f"Error accessing {url}: {e}")
+
+def check_svn_repo(url, depth):
+    try:
+        svn_url = urllib.parse.urljoin(url, ".svn/")
+        response = requests.head(svn_url, verify=False)
+
+        if response.status_code == 200:
+            print(f"SVN repo found: {url}")
+
+            # `repo_name`을 URL에서 추출
+            repo_name = os.path.basename(urllib.parse.urlparse(url).path.rstrip("/"))
+
+            # `svn info` 실행
+            svn_info = subprocess.run(["svn", "info", url, "--non-interactive", "--trust-server-cert", "--no-auth-cache"],
+                                      capture_output=True, text=True)
+            if svn_info.returncode == 0:
+                author, date = None, None
+                for line in svn_info.stdout.splitlines():
+                    if line.startswith("Last Changed Author:"):
+                        author = line.split(": ", 1)[1]
+                    elif line.startswith("Last Changed Date:"):
+                        date = line.split(": ", 1)[1]
+
+                # CSV 파일에 저장
+                with open(OUTPUT_FILE, mode="a", newline="", encoding="utf-8") as file:
+                    writer = csv.writer(file)
+                    writer.writerow([repo_name, url, author, date])
+
+        if depth > 1:
+            get_folders(url, depth)
+
+    except requests.RequestException as e:
+        print(f"Error checking SVN repo at {url}: {e}")
+
+# 실행
+get_folders(BASE_URL, DEPTH)
+print(f"CSV 저장 완료: {OUTPUT_FILE}")
