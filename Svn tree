@@ -1,0 +1,33 @@
+svn list -R | grep '/$' | awk '
+{
+    split($0, path, "/");
+    depth = length(path) - 1;
+    tree[depth, path[depth]] = 1;
+    parent[depth, path[depth]] = path[depth-1];
+    nodes[depth] = path[depth];
+    max_depth = (max_depth < depth) ? depth : max_depth;
+}
+END {
+    for (i = 0; i <= max_depth; i++) {
+        for (j in tree) {
+            split(j, key, SUBSEP);
+            d = key[1];
+            name = key[2];
+            if (d == i) {
+                prefix = "";
+                for (k = 1; k < d; k++) {
+                    if (tree[k, nodes[k]]) {
+                        prefix = prefix "│   ";
+                    } else {
+                        prefix = prefix "    ";
+                    }
+                }
+                if (i == max_depth || !tree[i+1, name]) {
+                    print prefix "└── " name;
+                } else {
+                    print prefix "├── " name;
+                }
+            }
+        }
+    }
+}'
