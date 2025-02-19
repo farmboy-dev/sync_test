@@ -1,0 +1,26 @@
+svn list -R | grep '/$' | awk '
+{
+    n = split($0, path, "/");
+    indent = "";
+
+    # 깊이별 부모 트래킹
+    depth[n-1] = path[n-1];
+
+    # 들여쓰기 + ├── 또는 └── 추가
+    for (i = 1; i < n-1; i++) {
+        if (seen[i]) {
+            indent = indent "│   ";
+        } else {
+            indent = indent "    ";
+        }
+    }
+
+    # 마지막 폴더인지 체크하여 ├── or └── 선택
+    if (seen[n-1]) {
+        print indent "├── " path[n-1];
+    } else {
+        print indent "└── " path[n-1];
+    }
+
+    seen[n-1] = 1;
+}'
