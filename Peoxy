@@ -1,0 +1,21 @@
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen 80;
+        server_name your-proxy.example.com;
+
+        location /artifactory/ {
+            proxy_pass http://internal-jfrog:8081/artifactory/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+
+            # Authorization 헤더를 JFrog에 전달 (유저 인증 필요할 경우)
+            proxy_pass_header Authorization;
+        }
+    }
+}
