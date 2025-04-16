@@ -1,0 +1,73 @@
+from flask import Flask, jsonify
+from flask_apscheduler import APScheduler
+import pyodbc
+import json
+from datetime import datetime
+
+# 설정
+DB_CONFIG = {
+    'server': 'YOUR_SERVER',
+    'database': 'YOUR_DB',
+    'username': 'YOUR_USER',
+    'password': 'YOUR_PASSWORD',
+    'driver': '{ODBC Driver 17 for SQL Server}'
+}
+JSON_FILE = 'query_result.json'
+QUERY = "SELECT TOP 10 * FROM your_table"  # 여기에 원하는 쿼리 입력
+
+# Flask 앱과 스케줄러 설정
+app = Flask(__name__)
+
+class Config:
+    SCHEDULER_API_ENABLED = True
+
+app.config.from_object(Config())
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+
+# DB에서 쿼리 실행 후 JSON 저장
+def fetch_and_save_data():
+    try:
+        conn_str = (
+            f"DRIVER={DB_CONFIG['driver']};"
+            f"SERVER={DB_CONFIG['server']};"
+            f"DATABASE={DB_CONFIG['database']};"
+            f"UID={DB_CONFIG['username']};"
+            f"PWD={DB_CONFIG['password']}"
+        )
+        conn = pyodbc.connect(conn_str)
+        cursor = conn.cursor()
+        cursor.execute(QUERY)
+
+        columns = [column[0] for column in cursor.description]
+        rows = cursor.fetchall()
+        data = [dict(zip(columns, row)) for row in rows]
+
+        with open(JSON_FILE, 'w', encoding='utf-8') as f:
+            json.dump({'timestamp': datetime.now().isoformat(), 'data': data}, f, indent=4)
+
+        cursor.close()
+        conn.close()
+        print("Data fetched and saved.")
+    except Exception as e:
+        print(f"Error: {e}")
+
+# 스케줄러 작업 등록 (매 5분마다 실행 예시)
+@scheduler.task('interval', id='fetch_data_task', minutes=5, misfire_grace_time=900)
+def scheduled_task():
+    fetch_and_save_data()
+
+# API 엔드포인트
+@app.route('/data', methods=['GET'])
+def get_data():
+    try:
+        with open(JSON_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except FileNotFoundError:
+        return jsonify({'error': 'No data found'}), 404
+
+if __name__ == '__main__':
+    fetch_and_save_data()  # 앱 시작 시 1회 실행
+    app.run(host='0.0.0.0', port=5000)
