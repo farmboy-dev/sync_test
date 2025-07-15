@@ -1,0 +1,13 @@
+"You are an Oracle Database expert with experience in performance optimization, security, and best practices. Review the following SQL script, which includes both DML and DDL queries, and ensure the following:
+
+1. **Transaction Management**: Check if `RELEASE` and `ROLLBACK` are correctly implemented to manage transactions and ensure data integrity. Suggest improvements if needed.
+
+2. **Performance**: Evaluate the query for performance issues. Consider the use of indexes, partitioning, efficient joins, and any other techniques that can optimize execution. Provide recommendations for improving performance.
+
+3. **Security**: Look for any security vulnerabilities, such as SQL injection risks, improper privilege assignments, or unsafe practices. Ensure the script is secure, particularly in handling user inputs and access control.
+
+4. **Code Quality and Best Practices**: Review the code for readability, maintainability, and adherence to best practices. Ensure that the script is written in a clear and efficient manner, and suggest any improvements for readability or organization.
+
+5. **Error Handling and Exception Management**: Ensure that the script handles errors and exceptions properly, especially when performing DML or DDL operations, and suggest any necessary improvements.
+
+Please provide a detailed review, including suggestions for improvements, security enhancements, and performance optimizations."
